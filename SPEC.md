@@ -117,5 +117,20 @@ Items in the designs that conflict with or extend the locked spec (see section 9
 - Three share-card styles: Tux, Snow (JP), Zap.
 - HEIC input listed on the upload screen.
 
-## 9. Open questions
-See chat: reconcile section 8 conflicts before "start".
+## 9. Design conflicts: resolved
+- Annotation: dots only. No boxes, no confidence %, no category chips. Result screen drops the chips row.
+- Counting screen: fake progress of about 2-3 seconds with a penguin-finding animation, while one request runs. If the real response is slower, hold at ~90% until it returns. No "found so far", no background mode, no notify toggle.
+- Result actions: Share (canvas PNG, Web Share API) + Save + Again. Link is dropped in v1.
+- "Flag a missed penguin": backlog; hide the button.
+- Zero-result screen kept (playful copy + tips + "Try another photo").
+- Share cards: three styles (Tux, Snow JP, Zap); default Tux, Snow when locale is JA. User picks style in v1 or only default: TBD.
+- HEIC: needs a decision (browser decode support is uneven; Safari converts on pick, others may not).
+
+## 10. Backlog
+Boxes/confidence/categories, live streaming count, background jobs + notifications, persisted Link, Flag a missed penguin, dot editing, OpenRouter adapter, analytics tool choice, eval photo sourcing, custom domain, more languages.
+
+## 11. Remaining open questions
+- Share-card style choice: user-selectable or fixed default?
+- HEIC: support in v1 (extra decode library) or rely on the OS converting it?
+- Mascot assets: do you have SVG/PNG files, or should I recreate them as SVG from the mockup?
+- Fonts: the display and body fonts in the mockups, or my pick?
