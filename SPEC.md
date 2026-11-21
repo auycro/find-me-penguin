@@ -97,7 +97,7 @@ Ask for JSON only: one point at the centre of each penguin-like figure, normaliz
 
 ## 7. Answers received
 - Languages: EN + JA at launch (matches designs; recommended, others later).
-- Budget: USD 5/month. Rough estimate for Haiku with a ~1568px image and a JSON reply is about 0.003-0.005 USD per call, so about 1000 calls. Plan: call-based cap of 800/month in Upstash, plus a hard USD 5 limit in the provider console. Re-check against real usage numbers once built.
+- Budget: USD 5/month. Rough estimate for Haiku with a ~1568px image and a JSON reply is about 0.003-0.005 USD per call, so about 1000 calls. Update (task 4): Haiku 5.5 is priced at USD 0.10 / 0.50 per MTok, so a call is probably nearer 0.001 USD (~5000 calls per USD 5), to be confirmed from real `usage` numbers. Plan: call-based cap of 800/month in Upstash, plus a hard USD 5 limit in the provider console. Re-check against real usage numbers once built.
 - Brand: "find-me-penguin" / "ペンギン探そう". No domain; use the Vercel URL for now.
 - Camera: plain `<input type=file capture>`; no in-page stream.
 - Backlog: analytics tool choice; sourcing of eval photos.
@@ -149,3 +149,9 @@ Boxes/confidence/categories, live streaming count, background jobs + notificatio
 
 ## 14. Remaining questions
 None blocking. Say "start" to begin at task 1.
+
+## 15. Progress
+- Task 1 done: scaffold, Vercel preview confirmed.
+- Task 2 done: schema, provider interface, mock provider.
+- Task 3 done: /api/count route.
+- Task 4 done (mocked): Anthropic adapter (`claude-haiku-5-5`, prompt v1, no SDK retries, 25s timeout). Not yet run against the live API; that happens in task 5/6 with the eval set.
