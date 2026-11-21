@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Find Me Penguin · ペンギン探そう
 
-## Getting Started
+Upload or take a photo and the app counts the penguins, marking each one with an **X**. Real, cartoon or toy penguins all count. Shareable result cards, English and Japanese.
 
-First, run the development server:
+Next.js (App Router) on Vercel. A vision model (Anthropic Haiku by default, behind a provider interface) does the counting. Photos are resized in the browser, sent once, and never stored.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # uses the mock provider (3 fixed points) when PROVIDER is unset
+npm test             # unit tests
+npm run typecheck
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.example` to `.env.local` and fill it in to use the real model (`PROVIDER=anthropic`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Other scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run eval                  # score the labeled photos with the mock (free)
+npm run eval -- --live        # score with the real model (spends API money)
+npm run smoke -- https://URL  # check a deployed copy
+```
 
-## Learn More
+The eval photos are not in git (they include private and third-party images). `eval/manifest.json` lists the files and true counts; put the photos in `eval/photos/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploying
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+See [DEPLOY.md](./DEPLOY.md). In production the counting route refuses to run unless the Upstash rate-limit variables are set, so the paid model can never run unguarded.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Design and decisions
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [SPEC.md](./SPEC.md).
