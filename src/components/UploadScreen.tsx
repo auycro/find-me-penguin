@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState, type DragEvent } from "react";
 import type { Job } from "@/lib/flow";
 import { errorMessage, type ErrorKey } from "@/lib/i18n";
@@ -54,7 +55,9 @@ export function UploadScreen({ job, pickError, preparing, onFile, onOpenJob }: P
         <p className="text-sm font-bold text-lime" lang="ja">
           {m.brandJa}
         </p>
-        <h1 className="font-display mt-1 text-5xl leading-[0.95] tracking-tight">{m.headline}</h1>
+        <h1 tabIndex={-1} className="font-display mt-1 text-5xl leading-[0.95] tracking-tight">
+          {m.headline}
+        </h1>
         <p className="mt-3 text-base text-muted">{m.headlineSub}</p>
       </div>
 
@@ -68,8 +71,9 @@ export function UploadScreen({ job, pickError, preparing, onFile, onOpenJob }: P
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
         disabled={preparing}
+        aria-busy={preparing}
         className={`flex flex-1 flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed px-4 py-8 transition-colors ${
-          dragging ? "border-lime bg-surface" : "border-line"
+          dragging ? "border-lime bg-surface" : "border-line-strong"
         }`}
         style={{ minHeight: "14rem" }}
       >
@@ -97,7 +101,12 @@ export function UploadScreen({ job, pickError, preparing, onFile, onOpenJob }: P
 
       <div className="text-center text-xs text-muted">
         <p>{m.tip}</p>
-        <p className="mt-2">{m.privacy}</p>
+        <p className="mt-2">
+          {m.privacy}{" "}
+          <Link href="/privacy" className="font-bold text-fg underline underline-offset-2">
+            {m.privacyLink}
+          </Link>
+        </p>
       </div>
 
       {/* Plain file inputs: the camera one asks phones for the rear camera. */}

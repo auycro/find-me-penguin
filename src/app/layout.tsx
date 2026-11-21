@@ -31,8 +31,11 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0a0a0c",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
+  // Lets the page use the safe-area insets so content clears the iPhone home bar.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

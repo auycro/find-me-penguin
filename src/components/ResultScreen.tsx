@@ -39,7 +39,7 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-5">
       <header className="grid grid-cols-[3rem_1fr_3rem] items-center">
-        <button type="button" onClick={onClose} aria-label={m.close} className="grid size-10 place-items-center text-2xl leading-none">
+        <button type="button" onClick={onClose} aria-label={m.close} className="grid size-11 place-items-center text-2xl leading-none">
           ×
         </button>
         <p className="text-center text-sm font-bold text-muted">{m.resultTitle}</p>
@@ -47,13 +47,24 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
 
       {view.kind === "count" && (
         <>
-          <div className="flex items-end gap-3" role="status" aria-live="polite">
-            <span className="font-display text-8xl leading-[0.8] text-lime" aria-label={String(view.value)}>
+          {/* The number animates, so sighted users see it counting up while screen readers get the final text. */}
+          <h1 tabIndex={-1} className="flex items-end gap-3">
+            <span className="sr-only">{m.foundSr(view.value)}</span>
+            <span aria-hidden="true" className="font-display text-8xl leading-[0.8] text-lime">
               {shown}
             </span>
-            <span className="font-display pb-1 text-2xl leading-tight">{m.found(view.value)}</span>
-          </div>
-          <MarkedPhoto src={job.previewUrl} width={result.width} height={result.height} points={result.points} showMarks />
+            <span aria-hidden="true" className="font-display pb-1 text-2xl leading-tight">
+              {m.found(view.value)}
+            </span>
+          </h1>
+          <MarkedPhoto
+            src={job.previewUrl}
+            width={result.width}
+            height={result.height}
+            points={result.points}
+            showMarks
+            alt={m.photoAltCount(view.value)}
+          />
           <ShareCards job={job} label={String(view.value)} showMarks>
             <button type="button" className="btn btn-ghost" onClick={onAgain}>
               {m.again}
@@ -64,19 +75,29 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
 
       {view.kind === "crowd" && (
         <>
-          <div className="flex items-center gap-4" role="status" aria-live="polite">
+          <div className="flex items-center gap-4">
             <span className="grid size-28 shrink-0 place-items-center rounded-full bg-lime">
               <Mascot variant="confused" className="w-24" />
             </span>
-            <div>
-              <p className="font-display text-7xl leading-[0.85] text-lime">{view.label}</p>
-            </div>
+            <p aria-hidden="true" className="font-display text-7xl leading-[0.85] text-lime">
+              {view.label}
+            </p>
           </div>
           <div>
-            <h1 className="font-display text-2xl leading-tight">{m.crowdHeadline}</h1>
+            <h1 tabIndex={-1} className="font-display text-2xl leading-tight">
+              <span className="sr-only">{view.label} </span>
+              {m.crowdHeadline}
+            </h1>
             <p className="mt-2 text-sm text-muted">{m.crowdSub}</p>
           </div>
-          <MarkedPhoto src={job.previewUrl} width={result.width} height={result.height} points={[]} showMarks={false} />
+          <MarkedPhoto
+            src={job.previewUrl}
+            width={result.width}
+            height={result.height}
+            points={[]}
+            showMarks={false}
+            alt={m.photoAltCrowd}
+          />
           <ShareCards job={job} label={view.label} showMarks={false}>
             <button type="button" className="btn btn-ghost" onClick={onAgain}>
               {m.again}
@@ -87,16 +108,28 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
 
       {view.kind === "zero" && (
         <>
-          <div className="flex items-center gap-4" role="status" aria-live="polite">
-            <span className="font-display grid size-24 shrink-0 place-items-center rounded-2xl border-2 border-fg bg-lime text-6xl text-on-lime">
+          <div className="flex items-center gap-4">
+            <span
+              aria-hidden="true"
+              className="font-display grid size-24 shrink-0 place-items-center rounded-2xl border-2 border-fg bg-lime text-6xl text-on-lime"
+            >
               0
             </span>
             <div>
-              <h1 className="font-display text-2xl leading-tight">{m.zeroHeadline}</h1>
+              <h1 tabIndex={-1} className="font-display text-2xl leading-tight">
+                {m.zeroHeadline}
+              </h1>
               <p className="mt-1 text-sm text-muted">{m.zeroSub}</p>
             </div>
           </div>
-          <MarkedPhoto src={job.previewUrl} width={result.width} height={result.height} points={[]} showMarks={false} />
+          <MarkedPhoto
+            src={job.previewUrl}
+            width={result.width}
+            height={result.height}
+            points={[]}
+            showMarks={false}
+            alt={m.photoAltZero}
+          />
           <section className="rounded-2xl border border-line bg-surface p-4">
             <h2 className="text-xs font-bold uppercase tracking-wider text-muted">{m.tryThis}</h2>
             <ul className="mt-3 flex flex-col gap-2.5 text-sm">

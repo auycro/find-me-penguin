@@ -7,6 +7,8 @@
   --muted: #9a9aa3;
   --surface: #141418;
   --line: #2b2b32;
+  /* Borders that identify controls need at least 3:1 against the background. */
+  --line-strong: #666672;
   --on-lime: #0a0a0c;
 }
 
@@ -17,6 +19,7 @@
   --muted: #5d5d66;
   --surface: #ffffff;
   --line: #cfcfc6;
+  --line-strong: #85857c;
 }
 
 @theme inline {
@@ -26,6 +29,7 @@
   --color-muted: var(--muted);
   --color-surface: var(--surface);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-on-lime: var(--on-lime);
   --font-display: var(--font-display-latin), var(--font-jp), system-ui, sans-serif;
   --font-sans: var(--font-body-latin), var(--font-jp), system-ui, sans-serif;
@@ -53,7 +57,11 @@ html[lang="ja"] .font-display { font-family: var(--font-jp), system-ui, sans-ser
 .btn:active { transform: scale(.98); }
 .btn:disabled { opacity: .5; cursor: default; }
 .btn-primary { background: var(--lime); color: var(--on-lime); border-color: var(--on-lime); }
-.btn-ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn-ghost { background: transparent; color: var(--fg); border-color: var(--line-strong); }
+/* Headings take focus when the screen changes so screen readers announce it; no ring needed. */
+h1[tabindex="-1"]:focus { outline: none; }
+.card-option:has(input:focus-visible) { outline: 3px solid var(--lime); outline-offset: 3px; }
+.card-option:has(input:checked) { background: color-mix(in srgb, var(--lime) 20%, transparent); box-shadow: 0 0 0 2px var(--lime); }
 :focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
 .theme-snow :focus-visible { outline-color: #111114; }
 

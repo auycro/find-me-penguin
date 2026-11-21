@@ -28,6 +28,15 @@ function Inner() {
   const jobCounter = useRef(0);
   const abortRef = useRef<AbortController | null>(null);
 
+  // When the screen changes, move focus to its heading so screen readers announce it
+  // and keyboard users start at the top of the new content. Skipped on first load.
+  const lastView = useRef(state.view);
+  useEffect(() => {
+    if (lastView.current === state.view) return;
+    lastView.current = state.view;
+    document.querySelector<HTMLElement>("main h1")?.focus({ preventScroll: false });
+  }, [state.view]);
+
   // Free the preview image when a job is replaced or cleared.
   const previewUrl = state.job?.previewUrl;
   useEffect(() => {
@@ -84,7 +93,7 @@ function Inner() {
 
   return (
     <div className={`app ${snow ? "theme-snow" : ""}`}>
-      <main className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col px-5 pb-8 pt-5">
+      <main className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col px-5 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-[calc(1.25rem+env(safe-area-inset-top))]">
         {view === "upload" && (
           <UploadScreen
             job={job}

@@ -17,6 +17,20 @@ describe("messages", () => {
     expect(messages.ja.cardSnowSuffix).not.toBe("");
   });
 
+  it("has the same privacy sections in both languages, all with text", () => {
+    expect(messages.ja.privacySections).toHaveLength(messages.en.privacySections.length);
+    for (const locale of ["en", "ja"] as const) {
+      for (const section of messages[locale].privacySections) {
+        expect(section.heading.trim()).not.toBe("");
+        expect(section.body.length).toBeGreaterThan(0);
+        for (const p of section.body) expect(p.trim().length).toBeGreaterThan(20);
+      }
+    }
+    expect(messages.ja.privacySections.map((s) => s.body.length)).toEqual(
+      messages.en.privacySections.map((s) => s.body.length),
+    );
+  });
+
   it("pluralizes the English found label", () => {
     expect(messages.en.found(1)).toBe("penguin found!");
     expect(messages.en.found(7)).toBe("penguins found!");

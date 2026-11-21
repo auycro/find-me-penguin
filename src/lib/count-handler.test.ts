@@ -3,6 +3,7 @@ import { handleCount } from "./count-handler";
 import { MAX_IMAGE_BYTES, sniffMime } from "./image";
 import { MockProvider } from "./providers/mock";
 import type { Guards } from "./limits";
+import type { StatEvent, Stats } from "./stats";
 import { ProviderError } from "./providers/types";
 
 const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0x10, 0x4a, 0x46]);
@@ -173,6 +174,57 @@ describe("handleCount", () => {
         { guards: guards({ allowRequest }), getProvider: () => new MockProvider() },
       );
       expect(allowRequest).toHaveBeenCalledWith("203.0.113.7");
+    });
+  });
+
+  describe("stats", () => {
+    const recorder = () => {
+      const events: StatEvent[] = [];
+      const stats: Stats = {
+        record: async (e) => void events.push(e),
+        summary: async () => {
+          throw new Error("unused");
+        },
+      };
+      return { events, stats };
+    };
+
+    it("records a success with the number of penguins", async () => {
+      const { events, stats } = recorder();
+      await handleCount(req(JPEG), { guards: null, stats, getProvider: () => new MockProvider() });
+      expect(events).toEqual([{ type: "ok", count: 3 }]);
+    });
+
+    it("records model failures and budget exhaustion", async () => {
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      const a = recorder();
+      const failing = new MockProvider({ error: new ProviderError("model_error", "x") });
+      await handleCount(req(JPEG), { guards: null, stats: a.stats, getProvider: () => failing });
+      expect(a.events).toEqual([{ type: "error", code: "model_error" }]);
+
+      const b = recorder();
+      await handleCount(req(JPEG), {
+        guards: { allowRequest: async () => true, takeBudget: async () => false },
+        stats: b.stats,
+        getProvider: () => new MockProvider(),
+      });
+      expect(b.events).toEqual([{ type: "error", code: "budget_exceeded" }]);
+    });
+
+    it("does not record rate-limited requests or bad uploads", async () => {
+      const { events, stats } = recorder();
+      await handleCount(req(JPEG), {
+        guards: { allowRequest: async () => false, takeBudget: async () => true },
+        stats,
+        getProvider: () => new MockProvider(),
+      });
+      await handleCount(req(new Uint8Array([1, 2, 3])), { guards: null, stats, getProvider: () => new MockProvider() });
+      expect(events).toEqual([]);
+    });
+
+    it("works without stats configured", async () => {
+      const res = await handleCount(req(JPEG), { guards: null, stats: null, getProvider: () => new MockProvider() });
+      expect(res.status).toBe(200);
     });
   });
 });

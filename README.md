@@ -26,6 +26,12 @@ npm run smoke -- https://URL  # check a deployed copy
 
 The eval photos are not in git (they include private and third-party images). `eval/manifest.json` lists the files and true counts; put the photos in `eval/photos/`.
 
+## Privacy and accessibility
+
+- `/privacy` explains exactly what is and isn't kept (also in Japanese). Keep it in step with the code if behaviour changes.
+- Usage is measured with anonymous daily counters in Redis (`src/lib/stats.ts`), viewable at `/api/stats` when `STATS_TOKEN` is set. No cookies, no third-party analytics.
+- Screens were checked with axe-core (WCAG 2.2 AA rules) and keyboard navigation; colour contrast is locked in by `src/lib/contrast.test.ts`.
+
 ## Deploying
 
 See [DEPLOY.md](./DEPLOY.md). In production the counting route refuses to run unless the Upstash rate-limit variables are set, so the paid model can never run unguarded.

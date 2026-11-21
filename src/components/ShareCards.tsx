@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { CARD_H, CARD_W } from "@/lib/card-layout";
 import type { Job } from "@/lib/flow";
 import {
@@ -37,6 +37,7 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 
 export function ShareCards({ job, label, showMarks, children }: Props) {
   const { m, locale } = useLocale();
+  const headingId = useId();
   const result = job.result!;
   const [picked, setPicked] = useState<CardStyle | null>(null);
   const style = picked ?? defaultStyle(locale);
@@ -119,22 +120,26 @@ export function ShareCards({ job, label, showMarks, children }: Props) {
   const names: Record<CardStyle, string> = { tux: m.styleTux, snow: m.styleSnow, zap: m.styleZap };
 
   return (
-    <section aria-label={m.cardsHeading} className="flex flex-col gap-4">
-      <h2 className="text-xs font-bold uppercase tracking-wider text-muted">{m.cardsHeading}</h2>
+    <section aria-labelledby={headingId} className="flex flex-col gap-4">
+      <h2 id={headingId} className="text-xs font-bold uppercase tracking-wider text-muted">
+        {m.cardsHeading}
+      </h2>
 
-      <div role="radiogroup" aria-label={m.cardsHeading} className="grid grid-cols-3 gap-3">
+      {/* Real radio inputs: arrow keys and screen-reader behaviour come for free. */}
+      <fieldset aria-labelledby={headingId} className="grid grid-cols-3 gap-3">
         {CARD_STYLES.map((s) => (
-          <button
+          <label
             key={s}
-            type="button"
-            role="radio"
-            aria-checked={style === s}
-            aria-label={names[s]}
-            onClick={() => setPicked(s)}
-            className={`flex flex-col items-center gap-2 rounded-2xl p-1.5 transition-colors ${
-              style === s ? "bg-lime/20 ring-2 ring-lime" : "ring-1 ring-line"
-            }`}
+            className="card-option flex cursor-pointer flex-col items-center gap-2 rounded-2xl p-1.5 ring-1 ring-line-strong"
           >
+            <input
+              type="radio"
+              name="card-style"
+              value={s}
+              checked={style === s}
+              onChange={() => setPicked(s)}
+              className="sr-only"
+            />
             <canvas
               ref={(el) => {
                 canvases.current[s] = el;
@@ -146,9 +151,9 @@ export function ShareCards({ job, label, showMarks, children }: Props) {
               aria-hidden="true"
             />
             <span className="text-xs font-bold">{names[s]}</span>
-          </button>
+          </label>
         ))}
-      </div>
+      </fieldset>
 
       {failed && (
         <p role="alert" className="rounded-2xl border border-line bg-surface px-4 py-3 text-sm">

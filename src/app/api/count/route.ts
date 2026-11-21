@@ -1,6 +1,7 @@
 import { handleCount } from "@/lib/count-handler";
 import { guardsFromEnv } from "@/lib/limits";
 import { getProvider } from "@/lib/providers";
+import { statsFromEnv } from "@/lib/stats";
 
 export const maxDuration = 30;
 
@@ -15,6 +16,7 @@ export async function POST(request: Request) {
   }
   return handleCount(request, {
     guards,
+    stats: statsFromEnv(),
     getProvider: () => getProvider(process.env.PROVIDER ?? (isProd ? undefined : "mock")),
   });
 }

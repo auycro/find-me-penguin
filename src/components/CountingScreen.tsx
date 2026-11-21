@@ -23,15 +23,17 @@ export function CountingScreen({ previewUrl, onCancel, onBackground }: Props) {
   return (
     <div className="flex flex-1 flex-col gap-5">
       <header className="flex items-center justify-between">
-        <h1 className="font-display text-2xl">{m.counting}</h1>
-        <button type="button" onClick={onCancel} className="px-2 py-2 text-sm font-bold text-muted">
+        <h1 tabIndex={-1} className="font-display text-2xl">
+          {m.counting}
+        </h1>
+        <button type="button" onClick={onCancel} className="min-h-11 min-w-11 px-3 text-sm font-bold text-muted">
           {m.cancel}
         </button>
       </header>
 
       <div className="relative overflow-hidden rounded-3xl bg-surface">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={previewUrl} alt="" className="block max-h-[46dvh] w-full object-cover opacity-80" />
+        <img src={previewUrl} alt={m.photoAltCounting} className="block max-h-[46dvh] w-full object-cover opacity-80" />
         <div className="scan-line" aria-hidden="true" />
       </div>
 
@@ -39,10 +41,11 @@ export function CountingScreen({ previewUrl, onCancel, onBackground }: Props) {
         <span className="grid size-40 place-items-center rounded-full bg-lime">
           <Mascot variant="searching" className="w-32" />
         </span>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-line" role="progressbar" aria-label={m.counting}>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-line" role="progressbar" aria-label={m.counting} aria-busy="true">
           <div className="progress-fill" />
         </div>
-        <p role="status" className="min-h-10 text-center text-sm text-muted">
+        {/* Rotates every 1.4s: decorative, so it is hidden from screen readers (the heading announces the state). */}
+        <p aria-hidden="true" className="min-h-10 text-center text-sm text-muted">
           {lines[i % lines.length]}
         </p>
       </div>

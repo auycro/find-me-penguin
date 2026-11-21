@@ -31,7 +31,9 @@ Project, Settings, Environment Variables. Add these for **Production**:
 | `UPSTASH_REDIS_REST_TOKEN` | from step 2 |
 | `MONTHLY_BUDGET_CALLS` | `800` to start (see "Budget" below) |
 
-Optional: `ANTHROPIC_MODEL` (defaults to `claude-haiku-5-5`).
+Optional:
+- `ANTHROPIC_MODEL` (defaults to `claude-haiku-5-5`).
+- `STATS_TOKEN`: a long random string (32+ characters) that unlocks the private usage page in step 6. Leave it unset and that page simply doesn't exist.
 
 Preview deployments get their own environment. If you want to test a preview with the real model, add the same variables to **Preview** too. They'd share the same Upstash database and spend limit. Without them a preview refuses to count, on purpose.
 
@@ -62,6 +64,14 @@ The first form costs nothing. If the API check fails with HTTP 500, one of the v
 - [ ] Airplane mode gives the "can't reach the server" message, not a blank screen
 
 ## 6. Budget and monitoring
+
+**Usage page (optional).** With `STATS_TOKEN` set, open this in any browser:
+
+```
+https://YOUR-APP.vercel.app/api/stats?token=YOUR_TOKEN&days=7
+```
+
+It shows anonymous daily totals only: how many counts worked, grouped by size (none, 1, 2-5, 6-20, more than 20), and how many failed on the server (`model_error`, `budget_exceeded`). No photos, no IPs. Rate-limited and bad-upload requests are deliberately not counted, so abusers can't burn the Redis quota. Counting starts from the first deployment that includes it. The token is in the URL, so it can show up in browser history and logs: keep the link private and change the token if it leaks.
 
 - The app counts one unit per model call per month and refuses new counts above `MONTHLY_BUDGET_CALLS`.
 - Haiku 5.5 is cheap, so 800 calls is very conservative. After a few days of use, look at actual spend in the Anthropic Console, work out the cost per call, and raise the cap accordingly. Keep the console spend limit as the hard stop either way.
