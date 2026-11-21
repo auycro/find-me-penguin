@@ -1,4 +1,5 @@
 import { MAX_IMAGE_BYTES, sniffMime } from "./image";
+import { clientIp, type Guards } from "./limits";
 import { ProviderError, type PenguinProvider } from "./providers/types";
 import type { Point } from "./schema";
 
@@ -23,6 +24,8 @@ function fail(code: CountErrorCode, status: number = STATUS[code]): Response {
 }
 
 export type CountDeps = {
+  /** Rate limit and monthly budget. Null disables both (local development only). */
+  guards: Guards | null;
   /** Resolved lazily so a misconfigured provider becomes a clean model_error. */
   getProvider: () => PenguinProvider;
 };
@@ -30,9 +33,16 @@ export type CountDeps = {
 /**
  * POST handler body for /api/count.
  * Expects multipart/form-data with an `image` file. Nothing is stored or logged.
- * Rate limiting and the budget guard are added in a later task, before the provider call.
+ * Order: per-IP rate limit, then validation, then the monthly budget, then the model call.
+ * Budget is spent only after validation so bad uploads cost nothing.
  */
 export async function handleCount(request: Request, deps: CountDeps): Promise<Response> {
+  if (deps.guards && !(await deps.guards.allowRequest(clientIp(request.headers)))) {
+    const res = fail("rate_limited");
+    res.headers.set("Retry-After", "60");
+    return res;
+  }
+
   const declared = Number(request.headers.get("content-length"));
   if (Number.isFinite(declared) && declared > MAX_IMAGE_BYTES + 64 * 1024) {
     return fail("bad_image", 413);
@@ -52,6 +62,8 @@ export async function handleCount(request: Request, deps: CountDeps): Promise<Re
   const bytes = new Uint8Array(await file.arrayBuffer());
   const mime = sniffMime(bytes);
   if (!mime) return fail("bad_image");
+
+  if (deps.guards && !(await deps.guards.takeBudget())) return fail("budget_exceeded");
 
   let provider: PenguinProvider;
   try {
