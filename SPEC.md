@@ -141,5 +141,11 @@ Boxes/confidence/categories, live streaming count, background jobs + notificatio
 - New task: SVG mascot, app icons, favicon, lockups.
 - New task: font setup via next/font (Google), JA subset.
 
-## 13. Remaining questions
+## 13. Deployment
+- Decision: Vercel Git integration. Preview URL per branch/PR, production on merge to `main`.
+- Owner action (outside the repo): import the GitHub repo in the Vercel dashboard and set env vars there (ANTHROPIC_API_KEY, PROVIDER, UPSTASH_REDIS_REST_URL/TOKEN, MONTHLY_BUDGET_CALLS). Create the Upstash database and the provider hard spend limit (USD 5).
+- No deploy pipeline in the repo for v1. Optional later: a GitHub Actions workflow running lint and unit tests as a required check. Eval set stays manual (paid API calls).
+- Task 1 becomes: scaffold the app, push to the branch, and confirm the Vercel preview builds.
+
+## 14. Remaining questions
 None blocking. Say "start" to begin at task 1.
