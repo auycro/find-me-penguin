@@ -95,10 +95,27 @@ Ask for JSON only: one point at the centre of each penguin-like figure, normaliz
 14. Custom domain, env config, production smoke test on real phones.
 15. OpenRouter adapter (post-v1).
 
-## 7. Open questions
-- Which languages at launch?
-- Monthly budget number, and is the cap call-based or cost-based?
-- Domain name?
-- Analytics tool choice?
-- Branding: name, mascot, colors?
-- Camera capture: use `<input capture>` (simple) or in-page camera stream (more control)?
+## 7. Answers received
+- Languages: EN + JA at launch (matches designs; recommended, others later).
+- Budget: USD 5/month. Rough estimate for Haiku with a ~1568px image and a JSON reply is about 0.003-0.005 USD per call, so about 1000 calls. Plan: call-based cap of 800/month in Upstash, plus a hard USD 5 limit in the provider console. Re-check against real usage numbers once built.
+- Brand: "find-me-penguin" / "ペンギン探そう". No domain; use the Vercel URL for now.
+- Camera: plain `<input type=file capture>`; no in-page stream.
+- Backlog: analytics tool choice; sourcing of eval photos.
+
+## 8. Design alignment (from mockups)
+Screens provided: 1 Upload, 2 Counting, 3 Result, 4 Share cards (Tux dark / Snow JP / Zap lime), 5 Mascot, 10 No-penguins.
+
+Visual system: near-black UI, lime (#D4FF5A-ish) accent, heavy display type, tally-mark penguin mascot with magnifier (lime background or outlined version on black), EN/JP toggle in the header.
+
+Items in the designs that conflict with or extend the locked spec (see section 9):
+- Bounding boxes with confidence % per penguin (spec says dots).
+- Category chips: "5 real / 1 cartoon / 1 lookalike" (spec says one undifferentiated count).
+- Live "3 found so far" and a progress bar (spec says single JSON, no streaming).
+- "Count in background" + "Notify me when done" (needs a job queue and push; spec says stateless).
+- "Link" share and "Save" (a link needs persistence; spec says canvas PNG only).
+- "Flag a missed penguin" (needs a feedback channel; spec says no editing).
+- Three share-card styles: Tux, Snow (JP), Zap.
+- HEIC input listed on the upload screen.
+
+## 9. Open questions
+See chat: reconcile section 8 conflicts before "start".
