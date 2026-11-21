@@ -6,12 +6,15 @@ describe("messages", () => {
     expect(Object.keys(messages.ja).sort()).toEqual(Object.keys(messages.en).sort());
   });
 
-  it("has no empty strings", () => {
+  it("has no empty strings, except where a language needs no text", () => {
+    // English has no counter word after the number on the Snow card; Japanese does (羽).
+    const mayBeEmpty = new Set(["cardSnowSuffix"]);
     for (const locale of ["en", "ja"] as const) {
       for (const [key, value] of Object.entries(messages[locale])) {
-        if (typeof value === "string") expect(value.trim(), `${locale}.${key}`).not.toBe("");
+        if (typeof value === "string" && !mayBeEmpty.has(key)) expect(value.trim(), `${locale}.${key}`).not.toBe("");
       }
     }
+    expect(messages.ja.cardSnowSuffix).not.toBe("");
   });
 
   it("pluralizes the English found label", () => {

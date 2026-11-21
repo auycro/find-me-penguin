@@ -54,6 +54,21 @@ const en = {
   err_network: "Can't reach the server. Check your connection and try again.",
 
   found: (n: number): string => (n === 1 ? "penguin found!" : "penguins found!"),
+
+  share: "Share",
+  save: "Save",
+  cardsHeading: "Share card",
+  styleTux: "Tux",
+  styleSnow: "Snow",
+  styleZap: "Zap",
+  cardError: "Couldn't make the card. Please try again.",
+  cardUnit: (n: number): string => (n === 1 ? "penguin" : "penguins"),
+  cardFound: "found",
+  cardSnowTitle: "Penguins",
+  cardSnowFound: "found!",
+  cardSnowSuffix: "",
+  cardZap1: "Penguins.",
+  cardZap2: "Counted.",
 };
 
 export type Messages = { [K in keyof typeof en]: (typeof en)[K] };
@@ -110,6 +125,21 @@ const ja: Messages = {
   err_network: "サーバーに接続できません。通信状況を確認して、もう一度お試しください。",
 
   found: (): string => "羽 みつけた！",
+
+  share: "シェア",
+  save: "保存",
+  cardsHeading: "シェアカード",
+  styleTux: "タキシード",
+  styleSnow: "ゆき",
+  styleZap: "ビリビリ",
+  cardError: "カードを作れませんでした。もう一度お試しください。",
+  cardUnit: (): string => "羽",
+  cardFound: "みつけた！",
+  cardSnowTitle: "ペンギン",
+  cardSnowFound: "みつけた！",
+  cardSnowSuffix: "羽",
+  cardZap1: "ペンギン、",
+  cardZap2: "数えた。",
 };
 
 export const messages: Record<Locale, Messages> = { en, ja };

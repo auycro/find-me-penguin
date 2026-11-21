@@ -5,6 +5,7 @@ import { countView } from "@/lib/crowd";
 import type { Job } from "@/lib/flow";
 import { useLocale } from "./LocaleProvider";
 import { MarkedPhoto } from "./MarkedPhoto";
+import { ShareCards } from "./ShareCards";
 import { Mascot } from "./Mascot";
 
 type Props = { job: Job; onClose: () => void; onAgain: () => void };
@@ -53,6 +54,11 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
             <span className="font-display pb-1 text-2xl leading-tight">{m.found(view.value)}</span>
           </div>
           <MarkedPhoto src={job.previewUrl} width={result.width} height={result.height} points={result.points} showMarks />
+          <ShareCards job={job} label={String(view.value)} showMarks>
+            <button type="button" className="btn btn-ghost" onClick={onAgain}>
+              {m.again}
+            </button>
+          </ShareCards>
         </>
       )}
 
@@ -71,6 +77,11 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
             <p className="mt-2 text-sm text-muted">{m.crowdSub}</p>
           </div>
           <MarkedPhoto src={job.previewUrl} width={result.width} height={result.height} points={[]} showMarks={false} />
+          <ShareCards job={job} label={view.label} showMarks={false}>
+            <button type="button" className="btn btn-ghost" onClick={onAgain}>
+              {m.again}
+            </button>
+          </ShareCards>
         </>
       )}
 
@@ -100,11 +111,13 @@ export function ResultScreen({ job, onClose, onAgain }: Props) {
         </>
       )}
 
-      <div className="mt-auto flex flex-col gap-3 pt-2">
-        <button type="button" className="btn btn-primary" onClick={onAgain}>
-          {view.kind === "zero" ? m.tryAnother : m.again}
-        </button>
-      </div>
+      {view.kind === "zero" && (
+        <div className="mt-auto flex flex-col gap-3 pt-2">
+          <button type="button" className="btn btn-primary" onClick={onAgain}>
+            {m.tryAnother}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
