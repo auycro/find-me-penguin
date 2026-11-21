@@ -12,8 +12,8 @@ import type { Locale, Messages } from "./i18n";
 import { markHalfSize } from "./marks";
 import type { Point } from "./schema";
 
-export type CardStyle = "tux" | "snow" | "zap";
-export const CARD_STYLES: readonly CardStyle[] = ["tux", "snow", "zap"];
+export type CardStyle = "dark" | "snow" | "zap";
+export const CARD_STYLES: readonly CardStyle[] = ["dark", "snow", "zap"];
 
 export type CardInput = {
   image: CanvasImageSource;
@@ -38,7 +38,7 @@ const latinFont = (size: number) => `400 ${size}px "Archivo Black", "Noto Sans J
 const jpFont = (size: number) => `900 ${size}px "Noto Sans JP", "Archivo Black", system-ui, sans-serif`;
 const displayFont = (locale: Locale) => (locale === "ja" ? jpFont : latinFont);
 
-export const defaultStyle = (locale: Locale): CardStyle => (locale === "ja" ? "snow" : "tux");
+export const defaultStyle = (locale: Locale): CardStyle => (locale === "ja" ? "snow" : "dark");
 
 /** Make sure the web fonts are ready before drawing, including the exact Japanese glyphs. */
 export async function ensureCardFonts(locale: Locale, m: Messages): Promise<void> {
@@ -153,7 +153,7 @@ function fitted(ctx: CanvasRenderingContext2D, str: string, fontOf: (s: number) 
   );
 }
 
-function drawTux(ctx: CanvasRenderingContext2D, input: CardInput) {
+function drawDark(ctx: CanvasRenderingContext2D, input: CardInput) {
   const { m, locale, label, count } = input;
   const font = displayFont(locale);
   ctx.fillStyle = INK;
@@ -242,7 +242,7 @@ function drawZap(ctx: CanvasRenderingContext2D, input: CardInput) {
 export function drawCard(ctx: CanvasRenderingContext2D, style: CardStyle, input: CardInput, scale = 1) {
   ctx.save();
   ctx.scale(scale, scale);
-  if (style === "tux") drawTux(ctx, input);
+  if (style === "dark") drawDark(ctx, input);
   else if (style === "snow") drawSnow(ctx, input);
   else drawZap(ctx, input);
   ctx.restore();

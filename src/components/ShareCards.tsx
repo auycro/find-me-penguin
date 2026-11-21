@@ -117,7 +117,7 @@ export function ShareCards({ job, label, showMarks, children }: Props) {
     }
   }
 
-  const names: Record<CardStyle, string> = { tux: m.styleTux, snow: m.styleSnow, zap: m.styleZap };
+  const names: Record<CardStyle, string> = { dark: m.styleDark, snow: m.styleSnow, zap: m.styleZap };
 
   return (
     <section aria-labelledby={headingId} className="flex flex-col gap-4">
