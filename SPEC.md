@@ -129,8 +129,17 @@ Items in the designs that conflict with or extend the locked spec (see section 9
 ## 10. Backlog
 Boxes/confidence/categories, live streaming count, background jobs + notifications, persisted Link, Flag a missed penguin, dot editing, OpenRouter adapter, analytics tool choice, eval photo sourcing, custom domain, more languages.
 
-## 11. Remaining open questions
-- Share-card style choice: user-selectable or fixed default?
-- HEIC: support in v1 (extra decode library) or rely on the OS converting it?
-- Mascot assets: do you have SVG/PNG files, or should I recreate them as SVG from the mockup?
-- Fonts: the display and body fonts in the mockups, or my pick?
+## 11. Final decisions
+- Share cards: user picks among Tux (dark), Snow (JP), Zap (lime). Default Tux for EN, Snow for JA. Picker shown on the result screen before Share/Save.
+- HEIC: supported in v1. Decode in the browser with a library (e.g. heic2any or libheif-js) when the browser cannot decode natively, then resize and re-encode to JPEG. Lazy-load the library only for HEIC files. Test on iPhone Safari and desktop Chrome.
+- Mascot: recreate as SVG from the mockup (lime and outlined variants, app icons, EN/JP lockups). Rules: always on lime or snow; outlined version on black.
+- Fonts: Google Fonts. Display: a heavy grotesque (candidates: Archivo Black / Dela Gothic One for JA display). Body: DM Sans. JA body: Noto Sans JP. Final pick when the UI is built.
+
+## 12. Task list additions
+- Task 8 now includes HEIC decode.
+- Task 9/11: card style picker, three card templates (EN and JA copy).
+- New task: SVG mascot, app icons, favicon, lockups.
+- New task: font setup via next/font (Google), JA subset.
+
+## 13. Remaining questions
+None blocking. Say "start" to begin at task 1.
