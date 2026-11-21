@@ -155,3 +155,5 @@ None blocking. Say "start" to begin at task 1.
 - Task 2 done: schema, provider interface, mock provider.
 - Task 3 done: /api/count route.
 - Task 4 done (mocked): Anthropic adapter (`claude-haiku-5-5`, prompt v1, no SDK retries, 25s timeout). Not yet run against the live API; that happens in task 5/6 with the eval set.
+- Task 5 done: eval set of 15 labeled photos (9 positive incl. 1 cartoon and 1 dense colony, 6 negatives incl. goats as white-animal traps). Photos are gitignored (private and third-party images); `eval/manifest.json` holds the true counts. Run `npm run eval` (mock, free) or `npm run eval -- --live` (real model, spends API money, needs `PROVIDER=anthropic` and `ANTHROPIC_API_KEY`).
+- Eval caveat: the live runner sends photos as-is. The browser resize step (task 8) does not exist yet, so large phone photos cost a little more than they will in production.

@@ -1,0 +1,20 @@
+{
+  "note": "True counts labeled by eye. 'tolerance' is the allowed absolute error for a pass; 0 means exact. Photos live in eval/photos (gitignored).",
+  "items": [
+    { "file": "01-pair-close.jpg", "trueCount": 2, "tolerance": 0, "tags": ["real", "close"] },
+    { "file": "02-emperor-sliding.jpg", "trueCount": 1, "tolerance": 0, "tags": ["real", "close"] },
+    { "file": "03-colony-rocky.jpg", "trueCount": 55, "tolerance": 15, "tags": ["real", "dense", "rough-estimate"] },
+    { "file": "04-emperor-jump-reflection.jpg", "trueCount": 1, "tolerance": 0, "tags": ["real", "reflection-trap"] },
+    { "file": "05-crested-closeup.jpg", "trueCount": 1, "tolerance": 0, "tags": ["real", "close"] },
+    { "file": "06-adelie-jumping.jpg", "trueCount": 1, "tolerance": 0, "tags": ["real", "action"] },
+    { "file": "07-adelie-standing.jpg", "trueCount": 1, "tolerance": 0, "tags": ["real", "close"] },
+    { "file": "08-emperor-huddle-chick.jpg", "trueCount": 5, "tolerance": 1, "tags": ["real", "overlap", "chick"] },
+    { "file": "09-cartoon-suica.jpg", "trueCount": 1, "tolerance": 0, "tags": ["cartoon"] },
+    { "file": "10-neg-pavement.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative"] },
+    { "file": "11-neg-dog.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative", "animal"] },
+    { "file": "12-neg-goats-hillside.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative", "white-animal-trap"] },
+    { "file": "13-neg-goat-shelter-a.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative", "white-animal-trap"] },
+    { "file": "14-neg-goat-shelter-b.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative", "white-animal-trap"] },
+    { "file": "15-neg-futsal.jpg", "trueCount": 0, "tolerance": 0, "tags": ["negative", "people"] }
+  ]
+}
